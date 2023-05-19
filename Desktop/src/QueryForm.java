@@ -126,7 +126,11 @@ public class QueryForm extends javax.swing.JFrame {
         try {
             results = OpenOWL.execSparQl(query, model);
         } catch (Exception e) {
-            String message = e.toString().split("QueryParseException: ")[1];
+            String message = e.toString();
+            if (message.contains("QueryParseException:")) {
+                message = message.split("QueryParseException: ")[1];
+            }
+
             // Create a message panel with a preferred size
             JPanel messagePanel = new JPanel();
             messagePanel.setPreferredSize(new java.awt.Dimension(300, 150));
@@ -162,7 +166,7 @@ public class QueryForm extends javax.swing.JFrame {
         System.out.println(data);
 
         int numRows = data.size();
-        int numCols = data.get(0).size();
+        int numCols = numRows == 0 ? 0 : data.get(0).size();
         String[][] arrayData = new String[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             List<String> row = data.get(i);
